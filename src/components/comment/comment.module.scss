@@ -1,0 +1,102 @@
+@import '@/app/_variables.scss';
+
+.comment {
+  background-color: $color-white;
+  color: $color-grayish-blue;
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.comment__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment__timestamp {
+  margin-left: 0.5rem;
+}
+
+.author__identification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.author__name {
+  text-transform: lowercase;
+  font-weight: 500;
+  color: $color-dark-blue;
+}
+
+.author__badge {
+  background-color: $color-moderate-blue;
+  color: $color-white;
+  font-weight: 500;
+  padding: 0.15rem 0.5rem;
+  border-radius: 5px;
+}
+
+.author__picture img {
+  width: 42px;
+  aspect-ratio: 1;
+}
+
+.comment__mention {
+  font-weight: 500;
+  color: $color-moderate-blue;
+}
+
+.comment__body {
+  margin-block: 1.25rem;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.voting_tab {
+  display: flex;
+  align-items: center;
+  background-color: $color-very-light-gray;
+  border-radius: 5px;
+}
+
+.vote_count {
+  font-weight: 500;
+  color: $color-moderate-blue;
+  padding: 0.75rem 0.5rem;
+}
+
+.actions {
+  font-weight: 500;
+  display: flex;
+}
+
+.author_actions {
+  display: flex;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: $color-moderate-blue;
+  margin-left: 0.5rem;
+}
+
+#action_delete {
+  color: $color-soft-red;
+}
+
+.action span {
+  align-self: center;
+  padding-inline: 0.5rem;
+}
+
+.upvote, .downvote {
+  padding: 0.75rem;
+}

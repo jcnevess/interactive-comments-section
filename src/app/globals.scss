@@ -1,0 +1,45 @@
+@import '_variables.scss';
+
+/*           CSS RESET        */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+/*      VARIABLES      */
+:root {
+  --color-moderate-blue: #{$color-moderate-blue};
+  --color-soft-red: #{$color-soft-red};
+  --color-light-grayish-blue: #{$color-light-grayish-blue};
+  --color-pale-red: #{$color-pale-red};
+
+  //color- Neutral
+  --color-dark-blue: #{$color-dark-blue};
+  --color-grayish-blue: #{$color-grayish-blue};
+  --color-light-gray: #{$color-light-gray};
+  --color-very-light-gray : #{$color-very-light-gray};
+  --color-white: #{$color-white};
+  }
+
+  body {
+    background-color: bisque;
+  }
