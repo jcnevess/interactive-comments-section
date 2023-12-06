@@ -1,0 +1,64 @@
+@import '@/app/_variables.scss';
+
+.commentForm {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: 2fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: $color-white;
+  border-radius: 10px;
+}
+
+.commentForm textarea {
+  grid-column: 1 / span 2;
+  resize: none;
+  padding: 0.75rem 1rem;
+  border-color: $color-light-gray;
+  align-self: stretch;
+}
+
+.commentForm picture {
+  grid-column: 1;
+  width: 42px;
+  aspect-ratio: 1;
+  place-self: center start;
+}
+
+.commentForm button {
+  grid-column: 2;
+  background-color: $color-moderate-blue;
+  color: white;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 500;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 1rem 2rem;
+  place-self: center end;
+}
+
+
+
+@media (min-width: $breakpoint-lg-screen) {
+  .commentForm {
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr 1fr;
+  }
+  
+  .commentForm textarea {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  
+  .commentForm picture {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  .commentForm button {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}

@@ -1,0 +1,14 @@
+@import "@/app/_variables.scss";
+
+.board {
+  padding: 1rem;
+}
+
+.sub_board {
+  padding-left: 1rem;
+  border-left: 1px solid $color-light-gray;
+}
+
+.container {
+  margin-block: 1rem;
+}

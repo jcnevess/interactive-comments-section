@@ -1,7 +1,12 @@
-import styles from './page.module.scss'
+import styles from "./page.module.scss";
+import { getLocalData } from "../lib/localdata";
 
-import Comment from '@/components/comment/comment';
+import CommentBoard from "@/components/comment-board/comment-board";
 
-export default function Home() {
-  return (<Comment></Comment>);
+export default async function Home() {
+  const localData = await getLocalData();
+
+  return (
+    <CommentBoard {...localData} isSubBoard={false} />
+  );
 }
