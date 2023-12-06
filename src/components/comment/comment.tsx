@@ -1,4 +1,5 @@
 import styles from './comment.module.scss';
+import moment from "moment";
 
 interface CommentProps {
   id: number,
@@ -22,7 +23,7 @@ export default function Comment(props: CommentProps) {
   }
 
   function getEllapsedTimeSince(timestamp: string): string {
-    return timestamp; // TODO
+    return moment(timestamp).fromNow();
   }
 
   return (
