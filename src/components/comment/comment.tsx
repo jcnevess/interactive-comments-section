@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import styles from './comment.module.scss';
 import moment from "moment";
+import { SignedUserContext } from "@/lib/signed-user.context";
 
 interface CommentProps {
   id: number,
@@ -17,9 +19,10 @@ interface CommentProps {
 }
 
 export default function Comment(props: CommentProps) {
+  const signedUser = useContext(SignedUserContext);
 
   function isCurrentUser(username: string): boolean {
-    return false; // TODO 
+    return username === signedUser.username;
   }
 
   function getEllapsedTimeSince(timestamp: string): string {

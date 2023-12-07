@@ -1,19 +1,18 @@
+import { useContext } from "react";
 import styles from './comment-form.module.scss';
 
-import { IUser } from "@/lib/types";
+import { SignedUserContext } from "@/lib/signed-user.context";
 
-interface CommentFormProps {
-  currentUser: IUser
-}
+export default function CommentForm() {
+  const signedUser = useContext(SignedUserContext);
 
-export default function CommentForm(props: CommentFormProps) {
   return (
     <form className={styles.commentForm} action="">
       <textarea placeholder="Add a comment..."></textarea>
       <picture>
-        <source srcSet={props.currentUser.image.webp} type="image/webp" />
-        <source srcSet={props.currentUser.image.png} type="image/png" />
-        <img src={props.currentUser.image.png} alt={props.currentUser.username} />
+        <source srcSet={signedUser.image.webp} type="image/webp" />
+        <source srcSet={signedUser.image.png} type="image/png" />
+        <img src={signedUser.image.png} alt={signedUser.username} />
       </picture>
       <button type="submit">Send</button>
     </form>
