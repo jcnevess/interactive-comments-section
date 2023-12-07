@@ -108,6 +108,7 @@
 
 .upvote, .downvote {
   padding: 0.75rem;
+  cursor: pointer;
 }
 
 @media (min-width: $breakpoint-lg-screen) {
