@@ -9,7 +9,7 @@ export default async function Home() {
 
   return (
     <SignedUserProvider signedUser={localData.currentUser}>
-      <CommentBoard comments={localData.comments} isSubBoard={false} />
+      <CommentBoard comments={localData.comments} />
     </SignedUserProvider>
   );
 }

@@ -1,26 +1,23 @@
 "use client"
 
+import CommentBlock from "../comment-block/comment-block";
+import CommentForm from "../comment-form/comment-form";
 import styles from './comment-board.module.scss';
 
 import { IComment } from "@/lib/types";
 
-import Comment from "@/components/comment/comment";
-import CommentForm from "@/components/comment-form/comment-form";
-
 interface CommentBoardProps {
   comments: IComment[],
-  isSubBoard: boolean
+  isSubBoard?: boolean
 }
 
-export default function CommentBoard(props: CommentBoardProps) {
+export default function CommentBoard({ comments, isSubBoard = false }: CommentBoardProps) {
   return (
-    <div className={props.isSubBoard ? styles.sub_board : styles.board}>
-      {props.comments.map(comment => {
+    <div className={isSubBoard ? styles.sub_board : styles.board}>
+      {comments.map(comment => {
         return (
           <div className={styles.container} key={comment.id}>
-            <Comment {...comment} />
-
-            <CommentForm />
+            <CommentBlock comment={comment} />
 
             {comment.replies &&
               <CommentBoard comments={comment.replies}
@@ -29,7 +26,7 @@ export default function CommentBoard(props: CommentBoardProps) {
         )
       })}
 
-      {!props.isSubBoard &&
+      {!isSubBoard &&
         <CommentForm />
       }
     </div>

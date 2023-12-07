@@ -15,7 +15,8 @@ interface CommentProps {
       webp: string
     },
     username: string
-  }
+  },
+  onReplyClick: Function
 }
 
 export default function Comment(props: CommentProps) {
@@ -66,11 +67,20 @@ export default function Comment(props: CommentProps) {
       <div className={styles.actions}>
         {isCurrentUser(props.user.username) ?
           <div className={styles.author_actions}>
-            <a href="#" className={styles.action} id={styles.action_delete}><span><img src="./images/icon-delete.svg" alt="" /></span>Delete</a>
-            <a href="#" className={styles.action} id={styles.action_edit}><span><img src="./images/icon-edit.svg" alt="" /></span>Edit</a>
+            <a href="javascript:;" className={styles.action} id={styles.action_delete}>
+              <span><img src="./images/icon-delete.svg" alt="" /></span>
+              Delete
+            </a>
+            <a href="javascript:;" className={styles.action} id={styles.action_edit}>
+              <span><img src="./images/icon-edit.svg" alt="" /></span>
+              Edit
+            </a>
           </div>
           :
-          <a href="#" className={styles.action} id={styles.action_reply}><span><img src="./images/icon-reply.svg" alt="" /></span>Reply</a>
+          <a href="javascript:;" className={styles.action} id={styles.action_reply} onClick={() => props.onReplyClick()}>
+            <span><img src="./images/icon-reply.svg" alt="" /></span>
+            Reply
+          </a>
         }
       </div>
     </div>
