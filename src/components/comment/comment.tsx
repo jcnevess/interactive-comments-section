@@ -83,7 +83,7 @@ export default function Comment(props: CommentProps) {
           :
           <a href="javascript:;" id={styles.action_reply}
             className={styles.action}
-            onClick={() => props.onReplyClick()}>
+            onClick={() => props.onReplyClick(props.user.username)}>
             <span><img src="./images/icon-reply.svg" alt="" /></span>
             Reply
           </a>

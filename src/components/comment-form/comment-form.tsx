@@ -3,12 +3,17 @@ import styles from './comment-form.module.scss';
 
 import { SignedUserContext } from "@/lib/signed-user.context";
 
-export default function CommentForm() {
+interface CommentFormProps {
+  replyingTo: string | null
+}
+
+export default function CommentForm({ replyingTo = null }: CommentFormProps) {
   const signedUser = useContext(SignedUserContext);
 
   return (
     <form className={styles.commentForm} action="">
-      <textarea placeholder="Add a comment..."></textarea>
+      <textarea placeholder={replyingTo ? `Replying to @${replyingTo}` : "Add a comment..."}>
+      </textarea>
       <picture>
         <source srcSet={signedUser.image.webp} type="image/webp" />
         <source srcSet={signedUser.image.png} type="image/png" />

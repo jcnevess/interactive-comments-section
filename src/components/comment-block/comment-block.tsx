@@ -10,18 +10,22 @@ interface CommentBlockProps {
 }
 
 export default function CommentBlock({ comment, onShowModal }: CommentBlockProps) {
-  const [isFormOpened, setIsFormOpened] = useState(false);
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
-  function toggleIsFormOpened() {
-    setIsFormOpened(!isFormOpened);
+  function toggleReply(replyTo: string) {
+    if (replyingTo === null) {
+      setReplyingTo(replyTo);
+    } else {
+      setReplyingTo(null);
+    }
   }
 
   return (
     <>
-      <Comment {...comment} onReplyClick={toggleIsFormOpened} onDeleteClick={onShowModal} />
+      <Comment {...comment} onReplyClick={toggleReply} onDeleteClick={onShowModal} />
 
-      {isFormOpened &&
-        <CommentForm />
+      {replyingTo &&
+        <CommentForm replyingTo={replyingTo} />
       }
     </>
   )
