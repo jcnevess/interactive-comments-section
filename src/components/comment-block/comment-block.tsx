@@ -5,10 +5,11 @@ import CommentForm from "@/components/comment-form/comment-form";
 import { useState } from "react";
 
 interface CommentBlockProps {
-  comment: IComment
+  comment: IComment,
+  onShowModal: Function
 }
 
-export default function CommentBlock({ comment }: CommentBlockProps) {
+export default function CommentBlock({ comment, onShowModal }: CommentBlockProps) {
   const [isFormOpened, setIsFormOpened] = useState(false);
 
   function toggleIsFormOpened() {
@@ -17,7 +18,7 @@ export default function CommentBlock({ comment }: CommentBlockProps) {
 
   return (
     <>
-      <Comment {...comment} onReplyClick={toggleIsFormOpened} />
+      <Comment {...comment} onReplyClick={toggleIsFormOpened} onDeleteClick={onShowModal} />
 
       {isFormOpened &&
         <CommentForm />

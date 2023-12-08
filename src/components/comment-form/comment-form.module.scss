@@ -17,6 +17,12 @@
   border-color: $color-light-gray;
   align-self: stretch;
   cursor: pointer;
+  border-radius: 10px;
+  color: $color-dark-blue;
+}
+
+.commentForm textarea:focus-visible {
+  outline: 1px solid $color-moderate-blue;
 }
 
 .commentForm picture {

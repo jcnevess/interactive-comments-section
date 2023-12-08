@@ -8,20 +8,22 @@ import { IComment } from "@/lib/types";
 
 interface CommentBoardProps {
   comments: IComment[],
-  isSubBoard?: boolean
+  isSubBoard?: boolean,
+  onShowModal: Function
 }
 
-export default function CommentBoard({ comments, isSubBoard = false }: CommentBoardProps) {
+export default function CommentBoard({ comments, isSubBoard = false, onShowModal }: CommentBoardProps) {
   return (
     <div className={isSubBoard ? styles.sub_board : styles.board}>
       {comments.map(comment => {
         return (
           <div className={styles.container} key={comment.id}>
-            <CommentBlock comment={comment} />
+            <CommentBlock comment={comment} onShowModal={onShowModal} />
 
             {comment.replies &&
               <CommentBoard comments={comment.replies}
-                isSubBoard={true} />}
+                isSubBoard={true}
+                onShowModal={onShowModal} />}
           </div>
         )
       })}

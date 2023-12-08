@@ -16,7 +16,8 @@ interface CommentProps {
     },
     username: string
   },
-  onReplyClick: Function
+  onReplyClick: Function,
+  onDeleteClick: Function
 }
 
 export default function Comment(props: CommentProps) {
@@ -67,17 +68,22 @@ export default function Comment(props: CommentProps) {
       <div className={styles.actions}>
         {isCurrentUser(props.user.username) ?
           <div className={styles.author_actions}>
-            <a href="javascript:;" className={styles.action} id={styles.action_delete}>
+            <a href="javascript:;" id={styles.action_delete}
+              className={styles.action}
+              onClick={() => props.onDeleteClick()}>
               <span><img src="./images/icon-delete.svg" alt="" /></span>
               Delete
             </a>
-            <a href="javascript:;" className={styles.action} id={styles.action_edit}>
+            <a href="javascript:;" id={styles.action_edit}
+              className={styles.action} >
               <span><img src="./images/icon-edit.svg" alt="" /></span>
               Edit
             </a>
           </div>
           :
-          <a href="javascript:;" className={styles.action} id={styles.action_reply} onClick={() => props.onReplyClick()}>
+          <a href="javascript:;" id={styles.action_reply}
+            className={styles.action}
+            onClick={() => props.onReplyClick()}>
             <span><img src="./images/icon-reply.svg" alt="" /></span>
             Reply
           </a>
