@@ -111,9 +111,55 @@
   cursor: pointer;
 }
 
+.edit_form {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 1.25rem;
+}
+
+.edit_form textarea {
+  resize: none;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-color: $color-light-gray;
+  cursor: pointer;
+  border-radius: 10px;
+  color: $color-dark-blue;
+}
+
+.edit_form textarea:focus-visible {
+  outline: 1px solid $color-moderate-blue;
+}
+
+.edit_form button {
+  color: white;
+  background-color: $color-moderate-blue;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 500;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 0.75rem 1.75rem;
+}
+
+.comment_text {
+  position: unset;
+}
+
+.hidden {
+  display: none;
+}
+
+.disabled {
+  opacity: 50%;
+  pointer-events: none;
+}
+
 @media (min-width: $breakpoint-lg-screen) {
   .comment {
-    grid-template-columns: auto auto auto;
+    grid-template-columns: min-content auto auto;
     grid-template-rows: auto auto;
     gap: 1.5rem;
     padding: 1.5rem;
