@@ -90,13 +90,13 @@ export default function Comment(props: CommentProps) {
       <div className={styles.actions}>
         {isCurrentUser(props.user.username) ?
           <div className={`${styles.author_actions} ${isEditing ? styles.disabled : ""}`}>
-            <a href="javascript:;" id={styles.action_delete}
+            <a href="#!" id={styles.action_delete}
               className={styles.action}
               onClick={() => props.onDeleteClick()}>
               <span><img src="./images/icon-delete.svg" alt="" /></span>
               Delete
             </a>
-            <a href="javascript:;" id={styles.action_edit}
+            <a href="#!" id={styles.action_edit}
               className={styles.action}
               onClick={() => onEditClick()}>
               <span><img src="./images/icon-edit.svg" alt="" /></span>
@@ -104,7 +104,7 @@ export default function Comment(props: CommentProps) {
             </a>
           </div>
           :
-          <a href="javascript:;" id={styles.action_reply}
+          <a href="#!" id={styles.action_reply}
             className={styles.action}
             onClick={() => props.onReplyClick(props.user.username)}>
             <span><img src="./images/icon-reply.svg" alt="" /></span>

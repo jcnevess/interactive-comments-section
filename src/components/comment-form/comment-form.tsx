@@ -4,7 +4,7 @@ import styles from './comment-form.module.scss';
 import { SignedUserContext } from "@/lib/signed-user.context";
 
 interface CommentFormProps {
-  replyingTo: string | null
+  replyingTo?: string | null
 }
 
 export default function CommentForm({ replyingTo = null }: CommentFormProps) {
