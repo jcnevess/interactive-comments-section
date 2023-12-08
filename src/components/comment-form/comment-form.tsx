@@ -12,7 +12,8 @@ export default function CommentForm({ replyingTo = null }: CommentFormProps) {
 
   return (
     <form className={styles.commentForm} action="">
-      <textarea placeholder={replyingTo ? `Replying to @${replyingTo}` : "Add a comment..."}>
+      <textarea placeholder={replyingTo ? `Replying to @${replyingTo}` : "Add a comment..."}
+        defaultValue={replyingTo ? `@${replyingTo} ` : ""}>
       </textarea>
       <picture>
         <source srcSet={signedUser.image.webp} type="image/webp" />
