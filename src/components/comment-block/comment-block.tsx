@@ -7,10 +7,11 @@ import { useState } from "react";
 interface CommentBlockProps {
   comment: IComment,
   onShowModal: Function,
-  onCreateComment: Function
+  onCreateComment: Function,
+  onEditComment: Function
 }
 
-export default function CommentBlock({ comment, onShowModal, onCreateComment }: CommentBlockProps) {
+export default function CommentBlock({ comment, onShowModal, onCreateComment, onEditComment }: CommentBlockProps) {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
   function toggleReply(replyTo: string) {
@@ -23,7 +24,7 @@ export default function CommentBlock({ comment, onShowModal, onCreateComment }: 
 
   return (
     <>
-      <Comment {...comment} onReplyClick={toggleReply} onDeleteClick={onShowModal} />
+      <Comment {...comment} onReplyClick={toggleReply} onDeleteClick={onShowModal} onEditClick={onEditComment} />
 
       {replyingTo &&
         <CommentForm replyingTo={replyingTo} onCreateComment={onCreateComment} />

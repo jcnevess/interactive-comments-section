@@ -19,13 +19,15 @@ interface CommentProps {
     username: string
   },
   onReplyClick: Function,
-  onDeleteClick: Function
+  onDeleteClick: Function,
+  onEditClick: Function
 }
 
 export default function Comment(props: CommentProps) {
   const signedUser = useContext(SignedUserContext);
 
   const [isEditing, setIsEditing] = useState(false);
+  const [commentContent, setCommentContent] = useState(props.content);
 
   function isCurrentUser(username: string): boolean {
     return username === signedUser.username;
@@ -35,13 +37,17 @@ export default function Comment(props: CommentProps) {
     return moment(timestamp).fromNow();
   }
 
-  function onEditClick() {
+  function handleEdit() {
     setIsEditing(true);
   }
 
-  function handleSubmit(evt: FormEvent<HTMLFormElement>) {
-    evt.preventDefault();
+  function handleSubmitEdit() {
     setIsEditing(false);
+    props.onEditClick(props.id, commentContent);
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setCommentContent(e.currentTarget.value);
   }
 
   return (
@@ -64,9 +70,9 @@ export default function Comment(props: CommentProps) {
 
       <div className={styles.comment__body}>
         {isEditing ?
-          <form className={styles.edit_form} onSubmit={handleSubmit}>
-            <textarea placeholder="Editing comment" defaultValue={props.content}></textarea>
-            <button type="submit" >Update</button>
+          <form className={styles.edit_form}>
+            <textarea placeholder="Editing comment" value={commentContent} onChange={handleChange}></textarea>
+            <button type="button" onClick={handleSubmitEdit}>Update</button>
           </form>
           :
           <p className={styles.shown}>
@@ -98,7 +104,7 @@ export default function Comment(props: CommentProps) {
             </a>
             <a href="#!" id={styles.action_edit}
               className={styles.action}
-              onClick={() => onEditClick()}>
+              onClick={() => handleEdit()}>
               <span><img src="./images/icon-edit.svg" alt="" /></span>
               Edit
             </a>

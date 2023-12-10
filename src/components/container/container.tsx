@@ -49,7 +49,45 @@ export default function Container({ initialComments }: ContainerProps) {
   // Uses deletableId
   function deleteComment() {
     let tempComments: IComment[] = JSON.parse(localStorage.getItem(COMMENTS_OBJECT) ?? "[]");
-    tempComments = tempComments.filter(comment => comment.id !== deletableId);
+    let originalSize = tempComments.length;
+
+    tempComments = tempComments.filter(comm => comm.id !== deletableId);
+    if (tempComments.length === originalSize) { // Nothing was deleted, filter the replies
+      tempComments = tempComments.map<IComment>(
+        comm => {
+          return {
+            id: comm.id,
+            content: comm.content,
+            createdAt: comm.createdAt,
+            score: comm.score,
+            replyingTo: comm.replyingTo,
+            user: comm.user,
+            replies: comm.replies.filter(rpl => rpl.id !== deletableId)
+          }
+        })
+    }
+
+    localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(tempComments));
+    setComments(tempComments);
+  }
+
+  function updateCommentContent(id: number, newContent: string) {
+    let tempComments: IComment[] = JSON.parse(localStorage.getItem(COMMENTS_OBJECT) ?? "[]");
+
+    // This is so ugly :(
+    for (var comment of tempComments) {
+      if (comment.id === id) {
+        comment.content = newContent
+        break;
+      }
+
+      for (var reply of comment.replies) {
+        if (reply.id === id) {
+          reply.content = newContent
+          break;
+        }
+      }
+    }
 
     localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(tempComments));
     setComments(tempComments);
@@ -57,7 +95,10 @@ export default function Container({ initialComments }: ContainerProps) {
 
   return (
     <>
-      <CommentBoard comments={comments} onShowModal={showModal} onCreateComment={createComment} />
+      <CommentBoard comments={comments}
+        onShowModal={showModal}
+        onCreateComment={createComment}
+        onEditComment={updateCommentContent} />
 
       {isModalShown &&
         <DeleteModal onHideModal={hideModal} onDeleteComment={deleteComment} />

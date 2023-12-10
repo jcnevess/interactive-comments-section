@@ -10,22 +10,27 @@ interface CommentBoardProps {
   comments: IComment[],
   isSubBoard?: boolean,
   onShowModal: Function,
-  onCreateComment: Function
+  onCreateComment: Function,
+  onEditComment: Function
 }
 
-export default function CommentBoard({ comments, isSubBoard = false, onShowModal, onCreateComment }: CommentBoardProps) {
+export default function CommentBoard({ comments, isSubBoard = false, onShowModal, onCreateComment, onEditComment }: CommentBoardProps) {
   return (
     <div className={isSubBoard ? styles.sub_board : styles.board}>
       {comments.map(comment => {
         return (
           <div className={styles.container} key={comment.id}>
-            <CommentBlock comment={comment} onShowModal={onShowModal} onCreateComment={onCreateComment} />
+            <CommentBlock comment={comment}
+              onShowModal={onShowModal}
+              onCreateComment={onCreateComment}
+              onEditComment={onEditComment} />
 
             {comment.replies &&
               <CommentBoard comments={comment.replies}
                 isSubBoard={true}
                 onShowModal={onShowModal}
-                onCreateComment={onCreateComment} />}
+                onCreateComment={onCreateComment}
+                onEditComment={onEditComment} />}
           </div>
         )
       })}
