@@ -14,6 +14,7 @@ export default function Container({ initialComments }: ContainerProps) {
 
   const [isModalShown, setIsModalShown] = useState(false);
   const [comments, setComments] = useState<IComment[]>([]);
+  const [deletableId, setDeletableId] = useState<number>();
 
   // Populate the localStorage and comments with initial data
   useEffect(() => {
@@ -26,15 +27,9 @@ export default function Container({ initialComments }: ContainerProps) {
     }
   }, [initialComments]);
 
-  // Keep localStorage in sync with comments
-  // From now on we only manipulate `comments`
-  /*useEffect(() => {
-    localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(comments))
-    console.log(comments)
-  }, [comments]);*/
-
-  function showModal() {
+  function showModal(deletableId: number) {
     setIsModalShown(true);
+    setDeletableId(deletableId);
   }
 
   function hideModal() {
@@ -51,12 +46,21 @@ export default function Container({ initialComments }: ContainerProps) {
     setComments(newCommentArray);
   }
 
+  // Uses deletableId
+  function deleteComment() {
+    let tempComments: IComment[] = JSON.parse(localStorage.getItem(COMMENTS_OBJECT) ?? "[]");
+    tempComments = tempComments.filter(comment => comment.id !== deletableId);
+
+    localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(tempComments));
+    setComments(tempComments);
+  }
+
   return (
     <>
       <CommentBoard comments={comments} onShowModal={showModal} onCreateComment={createComment} />
 
       {isModalShown &&
-        <DeleteModal onHideModal={hideModal} />
+        <DeleteModal onHideModal={hideModal} onDeleteComment={deleteComment} />
       }
     </>
   );

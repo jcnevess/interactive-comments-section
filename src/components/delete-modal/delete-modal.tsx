@@ -3,10 +3,11 @@
 import styles from "./delete-modal.module.scss";
 
 interface DeleteModalProps {
-  onHideModal: Function
+  onHideModal: Function,
+  onDeleteComment: Function
 }
 
-export default function DeleteModal({ onHideModal }: DeleteModalProps) {
+export default function DeleteModal({ onHideModal, onDeleteComment }: DeleteModalProps) {
 
   // Executes the `handler` only if the event ocurred in the same element where it is registered 
   function executeOnCurrentTarget(e: React.MouseEvent<HTMLElement>, handler: Function) {
@@ -33,7 +34,8 @@ export default function DeleteModal({ onHideModal }: DeleteModalProps) {
             onClick={(evt) => executeOnCurrentTarget(evt, onHideModal)}>No, cancel</button>
           <button id="buttonYes"
             className={`${styles.button} ${styles.buttonYes}`}
-            type="button">Yes, delete</button>
+            type="button"
+            onClick={(evt) => { onDeleteComment(); executeOnCurrentTarget(evt, onHideModal) }}>Yes, delete</button>
         </div>
       </div>
     </div>

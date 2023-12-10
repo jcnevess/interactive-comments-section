@@ -92,7 +92,7 @@ export default function Comment(props: CommentProps) {
           <div className={`${styles.author_actions} ${isEditing ? styles.disabled : ""}`}>
             <a href="#!" id={styles.action_delete}
               className={styles.action}
-              onClick={() => props.onDeleteClick()}>
+              onClick={() => props.onDeleteClick(props.id)}>
               <span><img src="./images/icon-delete.svg" alt="" /></span>
               Delete
             </a>
