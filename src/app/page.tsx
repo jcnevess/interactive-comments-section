@@ -9,7 +9,7 @@ export default async function Home() {
 
   return (
     <SignedUserProvider signedUser={localData.currentUser}>
-      <Container comments={localData.comments}></Container>
+      <Container initialComments={localData.comments}></Container>
     </SignedUserProvider>
   );
 }

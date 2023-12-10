@@ -9,7 +9,7 @@ export interface IUser {
 export interface IComment {
   id: number,
   content: string,
-  createdAt: string, //FIXME Change to date
+  createdAt: string,
   score: number,
   replyingTo?: string,
   user: IUser,
