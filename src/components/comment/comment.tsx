@@ -20,7 +20,8 @@ interface CommentProps {
   },
   onReplyClick: Function,
   onDeleteClick: Function,
-  onEditClick: Function
+  onEditClick: Function,
+  onVoteClick: Function
 }
 
 export default function Comment(props: CommentProps) {
@@ -48,6 +49,14 @@ export default function Comment(props: CommentProps) {
 
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setCommentContent(e.currentTarget.value);
+  }
+
+  function handleUpvote() {
+    props.onVoteClick(props.id, props.score + 1);
+  }
+
+  function handleDownvote() {
+    props.onVoteClick(props.id, props.score - 1);
   }
 
   return (
@@ -84,11 +93,11 @@ export default function Comment(props: CommentProps) {
       </div>
 
       <div className={styles.voting_tab}>
-        <div className={styles.upvote}>
+        <div className={styles.upvote} onClick={handleUpvote}>
           <img src="./images/icon-plus.svg" alt="" />
         </div>
         <div className={styles.vote_count}>{props.score}</div>
-        <div className={styles.downvote}>
+        <div className={styles.downvote} onClick={handleDownvote}>
           <img src="./images/icon-minus.svg" alt="" />
         </div>
       </div>

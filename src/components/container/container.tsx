@@ -93,12 +93,35 @@ export default function Container({ initialComments }: ContainerProps) {
     setComments(tempComments);
   }
 
+  function updateScore(id: number, newScore: number) {
+    let tempComments: IComment[] = JSON.parse(localStorage.getItem(COMMENTS_OBJECT) ?? "[]");
+
+    // This is so ugly :(
+    for (var comment of tempComments) {
+      if (comment.id === id) {
+        comment.score = newScore
+        break;
+      }
+
+      for (var reply of comment.replies) {
+        if (reply.id === id) {
+          reply.score = newScore
+          break;
+        }
+      }
+    }
+
+    localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(tempComments));
+    setComments(tempComments);
+  }
+
   return (
     <>
       <CommentBoard comments={comments}
         onShowModal={showModal}
         onCreateComment={createComment}
-        onEditComment={updateCommentContent} />
+        onEditComment={updateCommentContent}
+        onUpdateScore={updateScore} />
 
       {isModalShown &&
         <DeleteModal onHideModal={hideModal} onDeleteComment={deleteComment} />

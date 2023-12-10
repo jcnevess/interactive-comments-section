@@ -8,10 +8,11 @@ interface CommentBlockProps {
   comment: IComment,
   onShowModal: Function,
   onCreateComment: Function,
-  onEditComment: Function
+  onEditComment: Function,
+  onUpdateScore: Function
 }
 
-export default function CommentBlock({ comment, onShowModal, onCreateComment, onEditComment }: CommentBlockProps) {
+export default function CommentBlock({ comment, onShowModal, onCreateComment, onEditComment, onUpdateScore }: CommentBlockProps) {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
   function toggleReply(replyTo: string) {
@@ -24,7 +25,11 @@ export default function CommentBlock({ comment, onShowModal, onCreateComment, on
 
   return (
     <>
-      <Comment {...comment} onReplyClick={toggleReply} onDeleteClick={onShowModal} onEditClick={onEditComment} />
+      <Comment {...comment}
+        onReplyClick={toggleReply}
+        onDeleteClick={onShowModal}
+        onEditClick={onEditComment}
+        onVoteClick={onUpdateScore} />
 
       {replyingTo &&
         <CommentForm replyingTo={replyingTo} onCreateComment={onCreateComment} />

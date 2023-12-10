@@ -11,10 +11,16 @@ interface CommentBoardProps {
   isSubBoard?: boolean,
   onShowModal: Function,
   onCreateComment: Function,
-  onEditComment: Function
+  onEditComment: Function,
+  onUpdateScore: Function
 }
 
-export default function CommentBoard({ comments, isSubBoard = false, onShowModal, onCreateComment, onEditComment }: CommentBoardProps) {
+export default function CommentBoard({ comments,
+  isSubBoard = false,
+  onShowModal,
+  onCreateComment,
+  onEditComment,
+  onUpdateScore }: CommentBoardProps) {
   return (
     <div className={isSubBoard ? styles.sub_board : styles.board}>
       {comments.map(comment => {
@@ -23,14 +29,16 @@ export default function CommentBoard({ comments, isSubBoard = false, onShowModal
             <CommentBlock comment={comment}
               onShowModal={onShowModal}
               onCreateComment={onCreateComment}
-              onEditComment={onEditComment} />
+              onEditComment={onEditComment}
+              onUpdateScore={onUpdateScore} />
 
             {comment.replies &&
               <CommentBoard comments={comment.replies}
                 isSubBoard={true}
                 onShowModal={onShowModal}
                 onCreateComment={onCreateComment}
-                onEditComment={onEditComment} />}
+                onEditComment={onEditComment}
+                onUpdateScore={onUpdateScore} />}
           </div>
         )
       })}
