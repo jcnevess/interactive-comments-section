@@ -5,11 +5,12 @@ import { SignedUserContext } from "@/lib/signed-user.context";
 import { IComment } from "@/lib/types";
 
 interface CommentFormProps {
-  replyingTo?: string | null
-  onCreateComment: Function
+  onCreateComment: Function,
+  rootComment?: IComment,
+  replyingTo?: string
 }
 
-export default function CommentForm({ replyingTo = null, onCreateComment }: CommentFormProps) {
+export default function CommentForm({ onCreateComment, rootComment = undefined, replyingTo = undefined }: CommentFormProps) {
   const signedUser = useContext(SignedUserContext);
 
   const [content, setContent] = useState(replyingTo ? `@${replyingTo} ` : "");
@@ -40,7 +41,7 @@ export default function CommentForm({ replyingTo = null, onCreateComment }: Comm
         <source srcSet={signedUser.image.png} type="image/png" />
         <img src={signedUser.image.png} alt={signedUser.username} />
       </picture>
-      <button type="button" onClick={() => onCreateComment(comment)}>Send</button>
+      <button type="button" onClick={() => onCreateComment(comment, rootComment)}>Send</button>
     </form>
   );
 }

@@ -36,14 +36,23 @@ export default function Container({ initialComments }: ContainerProps) {
     setIsModalShown(false);
   }
 
-  function createComment(comment: IComment) {
+  function createComment(comment: IComment, parent?: IComment) {
     let localComment = comment;
     localComment.id = Math.round(Math.random() * 1e6); //FIXME This is a toy example, real code should not do this
     localComment.createdAt = new Date().toISOString();
 
-    const newCommentArray = comments.concat(localComment)
-    localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(newCommentArray));
-    setComments(newCommentArray);
+    if (parent) { // If it is a reply, update parent
+      let updatedParent = { ...parent };
+      console.log(parent);
+      updatedParent.replies = updatedParent.replies.concat(localComment);
+      const newCommentArray = comments.filter(comm => comm.id !== parent.id).concat(updatedParent);
+      localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(newCommentArray));
+      setComments(newCommentArray);
+    } else {
+      const newCommentArray = comments.concat(localComment);
+      localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(newCommentArray));
+      setComments(newCommentArray);
+    }
   }
 
   // Uses deletableId

@@ -8,7 +8,7 @@ import { IComment } from "@/lib/types";
 
 interface CommentBoardProps {
   comments: IComment[],
-  isSubBoard?: boolean,
+  rootComment?: IComment,
   onShowModal: Function,
   onCreateComment: Function,
   onEditComment: Function,
@@ -16,17 +16,18 @@ interface CommentBoardProps {
 }
 
 export default function CommentBoard({ comments,
-  isSubBoard = false,
+  rootComment = undefined,
   onShowModal,
   onCreateComment,
   onEditComment,
   onUpdateScore }: CommentBoardProps) {
   return (
-    <div className={isSubBoard ? styles.sub_board : styles.board}>
+    <div className={rootComment ? styles.sub_board : styles.board}>
       {comments.map(comment => {
         return (
           <div className={styles.container} key={comment.id}>
             <CommentBlock comment={comment}
+              rootComment={rootComment}
               onShowModal={onShowModal}
               onCreateComment={onCreateComment}
               onEditComment={onEditComment}
@@ -34,7 +35,7 @@ export default function CommentBoard({ comments,
 
             {comment.replies &&
               <CommentBoard comments={comment.replies}
-                isSubBoard={true}
+                rootComment={comment}
                 onShowModal={onShowModal}
                 onCreateComment={onCreateComment}
                 onEditComment={onEditComment}
@@ -43,7 +44,7 @@ export default function CommentBoard({ comments,
         )
       })}
 
-      {!isSubBoard &&
+      {!rootComment &&
         <CommentForm onCreateComment={onCreateComment} />
       }
     </div>
