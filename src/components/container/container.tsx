@@ -43,7 +43,6 @@ export default function Container({ initialComments }: ContainerProps) {
 
     if (parent) { // If it is a reply, update parent
       let updatedParent = { ...parent };
-      console.log(parent);
       updatedParent.replies = updatedParent.replies.concat(localComment);
       const newCommentArray = comments.filter(comm => comm.id !== parent.id).concat(updatedParent);
       localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(newCommentArray));

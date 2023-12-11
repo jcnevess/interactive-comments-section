@@ -33,7 +33,7 @@ export default function CommentBlock({ comment, rootComment, onShowModal, onCrea
         onVoteClick={onUpdateScore} />
 
       {replyingTo &&
-        <CommentForm onCreateComment={onCreateComment} rootComment={rootComment} replyingTo={comment.user.username} />
+        <CommentForm onCreateComment={onCreateComment} rootComment={rootComment} replyingTo={comment.user.username} onToggleReply={toggleReply} />
       }
     </>
   )

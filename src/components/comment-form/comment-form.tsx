@@ -6,27 +6,48 @@ import { IComment } from "@/lib/types";
 
 interface CommentFormProps {
   onCreateComment: Function,
+  onToggleReply?: Function,
   rootComment?: IComment,
   replyingTo?: string
 }
 
-export default function CommentForm({ onCreateComment, rootComment = undefined, replyingTo = undefined }: CommentFormProps) {
+export default function CommentForm({ onCreateComment, onToggleReply, rootComment = undefined, replyingTo = undefined }: CommentFormProps) {
   const signedUser = useContext(SignedUserContext);
 
   const [content, setContent] = useState(replyingTo ? `@${replyingTo} ` : "");
 
-  const comment: IComment = {
-    id: -1,
-    content: content,
-    createdAt: "",
-    score: 0,
-    replyingTo: replyingTo ?? undefined,
-    user: signedUser,
-    replies: [] as IComment[]
-  };
+  let comment: IComment;
+  if (replyingTo) {
+    comment = {
+      id: -1,
+      content: content.substring(replyingTo.length + 2), //Removes "@replyingTo " from saved comment
+      createdAt: "",
+      score: 0,
+      replyingTo: replyingTo ?? undefined,
+      user: signedUser,
+      replies: [] as IComment[]
+    };
+  } else {
+    comment = {
+      id: -1,
+      content: content,
+      createdAt: "",
+      score: 0,
+      replyingTo: replyingTo ?? undefined,
+      user: signedUser,
+      replies: [] as IComment[]
+    };
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setContent(e.currentTarget.value);
+  }
+
+  function handleClick() {
+    if (replyingTo) {
+      onToggleReply!(replyingTo);
+    }
+    onCreateComment(comment, rootComment);
   }
 
   return (
@@ -41,7 +62,7 @@ export default function CommentForm({ onCreateComment, rootComment = undefined, 
         <source srcSet={signedUser.image.png} type="image/png" />
         <img src={signedUser.image.png} alt={signedUser.username} />
       </picture>
-      <button type="button" onClick={() => onCreateComment(comment, rootComment)}>Send</button>
+      <button type="button" onClick={handleClick}>Send</button>
     </form>
   );
 }
