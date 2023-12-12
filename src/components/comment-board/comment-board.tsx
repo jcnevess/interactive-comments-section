@@ -24,7 +24,7 @@ export default function CommentBoard({ comments,
   return (
     <div className={rootComment ? styles.sub_board : styles.board}>
       {
-        comments.toSorted((c1, c2) => c1.score - c2.score).toReversed().map(comment => {
+        comments.sort((c1, c2) => c2.score - c1.score).map(comment => {
           return (
             <div className={styles.container} key={comment.id}>
               <CommentBlock comment={comment}
