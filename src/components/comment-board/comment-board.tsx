@@ -23,26 +23,27 @@ export default function CommentBoard({ comments,
   onUpdateScore }: CommentBoardProps) {
   return (
     <div className={rootComment ? styles.sub_board : styles.board}>
-      {comments.map(comment => {
-        return (
-          <div className={styles.container} key={comment.id}>
-            <CommentBlock comment={comment}
-              rootComment={rootComment}
-              onShowModal={onShowModal}
-              onCreateComment={onCreateComment}
-              onEditComment={onEditComment}
-              onUpdateScore={onUpdateScore} />
-
-            {comment.replies &&
-              <CommentBoard comments={comment.replies}
-                rootComment={comment}
+      {
+        comments.toSorted((c1, c2) => c1.score - c2.score).toReversed().map(comment => {
+          return (
+            <div className={styles.container} key={comment.id}>
+              <CommentBlock comment={comment}
+                rootComment={rootComment ? rootComment : comment}
                 onShowModal={onShowModal}
                 onCreateComment={onCreateComment}
                 onEditComment={onEditComment}
-                onUpdateScore={onUpdateScore} />}
-          </div>
-        )
-      })}
+                onUpdateScore={onUpdateScore} />
+
+              {comment.replies &&
+                <CommentBoard comments={comment.replies}
+                  rootComment={comment}
+                  onShowModal={onShowModal}
+                  onCreateComment={onCreateComment}
+                  onEditComment={onEditComment}
+                  onUpdateScore={onUpdateScore} />}
+            </div>
+          )
+        })}
 
       {!rootComment &&
         <CommentForm onCreateComment={onCreateComment} />
