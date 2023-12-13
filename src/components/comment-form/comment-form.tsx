@@ -3,16 +3,18 @@ import styles from './comment-form.module.scss';
 
 import { SignedUserContext } from "@/lib/signed-user.context";
 import { IComment } from "@/lib/types";
+import { BoardContext } from "@/lib/board.context";
+import { addComment, addReply } from "@/lib/board.reducer";
 
 interface CommentFormProps {
-  onCreateComment: Function,
   onToggleReply?: Function,
   rootComment?: IComment,
   replyingTo?: string
 }
 
-export default function CommentForm({ onCreateComment, onToggleReply, rootComment = undefined, replyingTo = undefined }: CommentFormProps) {
+export default function CommentForm({ onToggleReply, rootComment = undefined, replyingTo = undefined }: CommentFormProps) {
   const signedUser = useContext(SignedUserContext);
+  const { dispatch } = useContext(BoardContext);
 
   const [content, setContent] = useState(replyingTo ? `@${replyingTo} ` : "");
 
@@ -46,8 +48,10 @@ export default function CommentForm({ onCreateComment, onToggleReply, rootCommen
   function handleClick() {
     if (replyingTo) {
       onToggleReply!(replyingTo);
+      dispatch(addReply(comment, rootComment!));
+    } else {
+      dispatch(addComment(comment));
     }
-    onCreateComment(comment, rootComment);
   }
 
   return (

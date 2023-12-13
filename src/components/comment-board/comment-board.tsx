@@ -10,7 +10,6 @@ interface CommentBoardProps {
   comments: IComment[],
   rootComment?: IComment,
   onShowModal: Function,
-  onCreateComment: Function,
   onEditComment: Function,
   onUpdateScore: Function
 }
@@ -18,9 +17,9 @@ interface CommentBoardProps {
 export default function CommentBoard({ comments,
   rootComment = undefined,
   onShowModal,
-  onCreateComment,
   onEditComment,
   onUpdateScore }: CommentBoardProps) {
+
   return (
     <div className={rootComment ? styles.sub_board : styles.board}>
       {
@@ -30,7 +29,6 @@ export default function CommentBoard({ comments,
               <CommentBlock comment={comment}
                 rootComment={rootComment ? rootComment : comment}
                 onShowModal={onShowModal}
-                onCreateComment={onCreateComment}
                 onEditComment={onEditComment}
                 onUpdateScore={onUpdateScore} />
 
@@ -38,7 +36,6 @@ export default function CommentBoard({ comments,
                 <CommentBoard comments={comment.replies}
                   rootComment={comment}
                   onShowModal={onShowModal}
-                  onCreateComment={onCreateComment}
                   onEditComment={onEditComment}
                   onUpdateScore={onUpdateScore} />}
             </div>
@@ -46,7 +43,7 @@ export default function CommentBoard({ comments,
         })}
 
       {!rootComment &&
-        <CommentForm onCreateComment={onCreateComment} />
+        <CommentForm />
       }
     </div>
   );
