@@ -2,7 +2,6 @@
 
 .board {
   padding: 1rem;
-  width: 80%;
   margin: 2rem auto;
 }
 
@@ -13,4 +12,14 @@
 
 .container {
   margin-block: 1rem;
+}
+
+@media (min-width: $breakpoint-lg-screen) {
+  .board {
+    width: 75%;
+  }
+
+  .sub_board {
+    padding-left: 3rem;
+  }
 }

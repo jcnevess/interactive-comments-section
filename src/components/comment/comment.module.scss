@@ -168,7 +168,7 @@
 
 @media (min-width: $breakpoint-lg-screen) {
   .comment {
-    grid-template-columns: min-content auto auto;
+    grid-template-columns: min-content auto min-content;
     grid-template-rows: auto auto;
     gap: 1.5rem;
     padding: 1.5rem;
