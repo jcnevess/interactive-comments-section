@@ -5,7 +5,7 @@ import styles from './comment.module.scss';
 import moment from "moment";
 import { SignedUserContext } from "@/lib/signed-user.context";
 import { BoardContext } from "@/lib/board.context";
-import { addDeletionMark, downvoteComment, upvoteComment } from "@/lib/board.reducer";
+import { addDeletionMark, downvoteComment, editComment, upvoteComment } from "@/lib/board.reducer";
 
 interface CommentProps {
   id: number,
@@ -20,8 +20,7 @@ interface CommentProps {
     },
     username: string
   },
-  onReplyClick: Function,
-  onEditClick: Function
+  onReplyClick: Function
 }
 
 export default function Comment(props: CommentProps) {
@@ -45,7 +44,7 @@ export default function Comment(props: CommentProps) {
 
   function handleSubmitEdit() {
     setIsEditing(false);
-    props.onEditClick(props.id, commentContent);
+    dispatch(editComment(props.id, commentContent));
   }
 
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {

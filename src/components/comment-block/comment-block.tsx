@@ -6,11 +6,10 @@ import { useState } from "react";
 
 interface CommentBlockProps {
   comment: IComment,
-  rootComment?: IComment,
-  onEditComment: Function
+  rootComment?: IComment
 }
 
-export default function CommentBlock({ comment, rootComment, onEditComment }: CommentBlockProps) {
+export default function CommentBlock({ comment, rootComment }: CommentBlockProps) {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
   function toggleReply(replyTo: string) {
@@ -24,8 +23,7 @@ export default function CommentBlock({ comment, rootComment, onEditComment }: Co
   return (
     <>
       <Comment {...comment}
-        onReplyClick={toggleReply}
-        onEditClick={onEditComment} />
+        onReplyClick={toggleReply} />
 
       {replyingTo &&
         <CommentForm rootComment={rootComment} replyingTo={comment.user.username} onToggleReply={toggleReply} />

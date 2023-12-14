@@ -14,13 +14,14 @@ type AddReplyAction = { type: 'ADD_REPLY', payload: { reply: IComment, parent: I
 type AddDeletionMarkAction = { type: "ADD_DELETION_MARK", payload: number};
 type CleanDeletionMarkAction = { type: "CLEAN_DELETION_MARK"};
 type DeleteCommentAction = { type: 'DELETE_COMMENT', payload: number };
-// type EditCommentAction = { type: 'EDIT_COMMENT', payload: number}
 type UpvoteCommentAction = { type: 'UPVOTE_COMMENT', payload: {id: number} };
 type DownvoteCommentAction = { type: 'DOWNVOTE_COMMENT', payload: {id: number} };
+type EditCommentAction = { type: 'EDIT_COMMENT', payload: {id: number, content: string}};
 
 export type AppAction = AddCommentAction | AddReplyAction | 
                           AddDeletionMarkAction | CleanDeletionMarkAction |
-                          DeleteCommentAction | UpvoteCommentAction | DownvoteCommentAction
+                          DeleteCommentAction | EditCommentAction |
+                          UpvoteCommentAction | DownvoteCommentAction
 
 function addToScore(state: AppState, action: UpvoteCommentAction | DownvoteCommentAction, points: number) {
   let updatedComment = state.comments.find(comm => comm.id === action.payload.id);
@@ -109,12 +110,42 @@ export function boardReducer(state: AppState, action: AppAction): AppState {
       }
     }
 
-    case 'UPVOTE_COMMENT': {
+    case 'UPVOTE_COMMENT': 
       return addToScore(state, action, 1);
-    }
 
     case 'DOWNVOTE_COMMENT':
       return addToScore(state, action, -1);
+
+    case "EDIT_COMMENT": {
+      let editedComment = state.comments.find(comm => comm.id === action.payload.id);
+      
+      if(editedComment) {
+        editedComment = {...editedComment}
+        editedComment.content = action.payload.content;
+
+        return {
+          ...state,
+          comments: state.comments.filter(comm => comm.id !== action.payload.id).concat(editedComment)
+        }
+      } else {
+        let parentComment: IComment;
+        for (let comment of state.comments) {
+          parentComment = {...comment};
+          let editedReply = parentComment.replies.find(reply => reply.id === action.payload.id);
+          if (editedReply) {
+            editedReply = {...editedReply};
+            editedReply.content = action.payload.content;
+            parentComment.replies = parentComment.replies.filter(reply => reply.id !== editedReply?.id).concat(editedReply);
+            break;
+          }
+        }
+
+        return {
+          ...state,
+          comments: state.comments.filter(comm => comm.id !== parentComment!.id).concat(parentComment!)
+        }
+      }
+    }
 
     default:
       return state;
@@ -169,5 +200,11 @@ export function upvoteComment(id: number): AppAction {
 export function downvoteComment(id: number): AppAction {
   return {
     type: "DOWNVOTE_COMMENT", payload: {id}
+  }
+}
+
+export function editComment(id: number, content: string): AppAction {
+  return {
+    type: "EDIT_COMMENT", payload: {id, content}
   }
 }
