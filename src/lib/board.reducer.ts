@@ -9,11 +9,11 @@ export type AppState = {
   commentPendingDeletionId?: number
 }
 
-type AddCommentAction = { type: 'ADD_COMMENT', payload: IComment }; // FIXME make payload always be an object
+type AddCommentAction = { type: 'ADD_COMMENT', payload: {comment: IComment} };
 type AddReplyAction = { type: 'ADD_REPLY', payload: { reply: IComment, parent: IComment } };
-type AddDeletionMarkAction = { type: "ADD_DELETION_MARK", payload: number};
+type AddDeletionMarkAction = { type: "ADD_DELETION_MARK", payload: {id: number}};
 type CleanDeletionMarkAction = { type: "CLEAN_DELETION_MARK"};
-type DeleteCommentAction = { type: 'DELETE_COMMENT', payload: number };
+type DeleteCommentAction = { type: 'DELETE_COMMENT', payload: {id: number} };
 type UpvoteCommentAction = { type: 'UPVOTE_COMMENT', payload: {id: number} };
 type DownvoteCommentAction = { type: 'DOWNVOTE_COMMENT', payload: {id: number} };
 type EditCommentAction = { type: 'EDIT_COMMENT', payload: {id: number, content: string}};
@@ -60,7 +60,7 @@ function addToScore(state: AppState, action: UpvoteCommentAction | DownvoteComme
 export function boardReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
     case 'ADD_COMMENT':
-      let newComment = action.payload;
+      let newComment = action.payload.comment;
       newComment.id = Math.round(Math.random() * 1e6); //FIXME This is a toy example, real code should not do this
       newComment.createdAt = new Date().toISOString();
       return {
@@ -83,7 +83,7 @@ export function boardReducer(state: AppState, action: AppAction): AppState {
     case "ADD_DELETION_MARK":
       return {
         ...state,
-        commentPendingDeletionId: action.payload
+        commentPendingDeletionId: action.payload.id
       }
 
     case "CLEAN_DELETION_MARK":
@@ -94,18 +94,18 @@ export function boardReducer(state: AppState, action: AppAction): AppState {
 
     case 'DELETE_COMMENT': {
       const numOfOriginalComments = state.comments.length;
-      const updatedComments = state.comments.filter(comm => comm.id !== action.payload);
+      const updatedComments = state.comments.filter(comm => comm.id !== action.payload.id);
       
       // If the comment is not at top level, check replies
       if(updatedComments.length === numOfOriginalComments) {
         for (let comment of updatedComments) { //modifying a copy
-          comment.replies = comment.replies.filter(reply => reply.id !== action.payload);
+          comment.replies = comment.replies.filter(reply => reply.id !== action.payload.id);
         }
       }
 
       return {
         ...state,
-        comments: state.comments.filter(comm => comm.id !== action.payload),
+        comments: state.comments.filter(comm => comm.id !== action.payload.id),
         commentPendingDeletionId: undefined
       }
     }
@@ -163,7 +163,7 @@ export function initializer(initialValue = {} as AppState): AppState {
 
 export function addComment(comment: IComment): AppAction {
   return {
-    type: "ADD_COMMENT", payload: comment
+    type: "ADD_COMMENT", payload: {comment}
   }
 }
 
@@ -175,7 +175,7 @@ export function addReply(reply: IComment, parent: IComment): AppAction {
 
 export function addDeletionMark(id: number): AppAction {
   return {
-    type: "ADD_DELETION_MARK", payload: id
+    type: "ADD_DELETION_MARK", payload: {id}
   }
 }
 
@@ -187,7 +187,7 @@ export function cleanDeletionMark(): AppAction {
 
 export function deleteComment(id: number): AppAction {
   return {
-    type: "DELETE_COMMENT", payload: id
+    type: "DELETE_COMMENT", payload: {id}
   }
 }
 
