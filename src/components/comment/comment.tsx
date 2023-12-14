@@ -5,7 +5,7 @@ import styles from './comment.module.scss';
 import moment from "moment";
 import { SignedUserContext } from "@/lib/signed-user.context";
 import { BoardContext } from "@/lib/board.context";
-import { addDeletionMark } from "@/lib/board.reducer";
+import { addDeletionMark, downvoteComment, upvoteComment } from "@/lib/board.reducer";
 
 interface CommentProps {
   id: number,
@@ -21,8 +21,7 @@ interface CommentProps {
     username: string
   },
   onReplyClick: Function,
-  onEditClick: Function,
-  onVoteClick: Function
+  onEditClick: Function
 }
 
 export default function Comment(props: CommentProps) {
@@ -54,11 +53,11 @@ export default function Comment(props: CommentProps) {
   }
 
   function handleUpvote() {
-    props.onVoteClick(props.id, props.score + 1);
+    dispatch(upvoteComment(props.id));
   }
 
   function handleDownvote() {
-    props.onVoteClick(props.id, props.score - 1);
+    dispatch(downvoteComment(props.id));
   }
 
   return (

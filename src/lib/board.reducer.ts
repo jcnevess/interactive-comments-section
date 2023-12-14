@@ -9,17 +9,52 @@ export type AppState = {
   commentPendingDeletionId?: number
 }
 
-type AddCommentAction = { type: 'ADD_COMMENT', payload: IComment };
+type AddCommentAction = { type: 'ADD_COMMENT', payload: IComment }; // FIXME make payload always be an object
 type AddReplyAction = { type: 'ADD_REPLY', payload: { reply: IComment, parent: IComment } };
 type AddDeletionMarkAction = { type: "ADD_DELETION_MARK", payload: number};
 type CleanDeletionMarkAction = { type: "CLEAN_DELETION_MARK"};
 type DeleteCommentAction = { type: 'DELETE_COMMENT', payload: number };
-/* type EditCommentAction = { type: 'EDIT_COMMENT', payload: number}
-type VoteCommentAction = { type: 'VOTE_COMMENT', payload: { comment: IComment, votes: number } };*/
+// type EditCommentAction = { type: 'EDIT_COMMENT', payload: number}
+type UpvoteCommentAction = { type: 'UPVOTE_COMMENT', payload: {id: number} };
+type DownvoteCommentAction = { type: 'DOWNVOTE_COMMENT', payload: {id: number} };
 
 export type AppAction = AddCommentAction | AddReplyAction | 
                           AddDeletionMarkAction | CleanDeletionMarkAction |
-                          DeleteCommentAction
+                          DeleteCommentAction | UpvoteCommentAction | DownvoteCommentAction
+
+function addToScore(state: AppState, action: UpvoteCommentAction | DownvoteCommentAction, points: number) {
+  let updatedComment = state.comments.find(comm => comm.id === action.payload.id);
+
+  if(updatedComment) {
+    updatedComment = {...updatedComment};
+    updatedComment.score = updatedComment.score + points;
+
+    return {
+      ...state,
+      comments: state.comments.filter(comm => comm.id !== action.payload.id).concat(updatedComment ?? []),
+      commentPendingDeletionId: undefined
+    }
+  } else {
+    let parentComment: IComment;
+    for (let comment of state.comments) {
+      parentComment = {...comment};
+      let updatedReply = parentComment.replies.find(reply => reply.id === action.payload.id);
+      if(updatedReply) {
+        updatedReply = {...updatedReply}
+        updatedReply.score = updatedReply.score + points;
+        parentComment.replies = parentComment.replies.filter(reply => reply.id !== updatedReply!.id).concat(updatedReply);
+        updatedComment = parentComment;
+        break;
+      }
+    }
+
+    return {
+      ...state,
+      comments: state.comments.filter(comm => comm.id !== parentComment?.id).concat(updatedComment ?? []),
+      commentPendingDeletionId: undefined
+    }
+  }      
+}
 
 export function boardReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
@@ -56,7 +91,7 @@ export function boardReducer(state: AppState, action: AppAction): AppState {
         commentPendingDeletionId: undefined
       }
 
-    case 'DELETE_COMMENT':
+    case 'DELETE_COMMENT': {
       const numOfOriginalComments = state.comments.length;
       const updatedComments = state.comments.filter(comm => comm.id !== action.payload);
       
@@ -72,6 +107,14 @@ export function boardReducer(state: AppState, action: AppAction): AppState {
         comments: state.comments.filter(comm => comm.id !== action.payload),
         commentPendingDeletionId: undefined
       }
+    }
+
+    case 'UPVOTE_COMMENT': {
+      return addToScore(state, action, 1);
+    }
+
+    case 'DOWNVOTE_COMMENT':
+      return addToScore(state, action, -1);
 
     default:
       return state;
@@ -114,5 +157,17 @@ export function cleanDeletionMark(): AppAction {
 export function deleteComment(id: number): AppAction {
   return {
     type: "DELETE_COMMENT", payload: id
+  }
+}
+
+export function upvoteComment(id: number): AppAction {
+  return {
+    type: "UPVOTE_COMMENT", payload: {id}
+  }
+}
+
+export function downvoteComment(id: number): AppAction {
+  return {
+    type: "DOWNVOTE_COMMENT", payload: {id}
   }
 }

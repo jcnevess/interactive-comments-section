@@ -9,14 +9,12 @@ import { IComment } from "@/lib/types";
 interface CommentBoardProps {
   comments: IComment[],
   rootComment?: IComment,
-  onEditComment: Function,
-  onUpdateScore: Function
+  onEditComment: Function
 }
 
 export default function CommentBoard({ comments,
   rootComment = undefined,
-  onEditComment,
-  onUpdateScore }: CommentBoardProps) {
+  onEditComment }: CommentBoardProps) {
 
   return (
     <div className={rootComment ? styles.sub_board : styles.board}>
@@ -26,14 +24,12 @@ export default function CommentBoard({ comments,
             <div className={styles.container} key={comment.id}>
               <CommentBlock comment={comment}
                 rootComment={rootComment ? rootComment : comment}
-                onEditComment={onEditComment}
-                onUpdateScore={onUpdateScore} />
+                onEditComment={onEditComment} />
 
               {comment.replies &&
                 <CommentBoard comments={comment.replies}
                   rootComment={comment}
-                  onEditComment={onEditComment}
-                  onUpdateScore={onUpdateScore} />}
+                  onEditComment={onEditComment} />}
             </div>
           )
         })}
