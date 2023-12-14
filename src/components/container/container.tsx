@@ -9,50 +9,9 @@ import { BoardContext } from "@/lib/board.context";
 export default function Container() {
   const COMMENTS_OBJECT = "comments";
 
-  const { state, dispatch } = useContext(BoardContext);
+  const { state } = useContext(BoardContext);
 
-  const [isModalShown, setIsModalShown] = useState(false);
   const [comments, setComments] = useState<IComment[]>(state.comments);
-  const [deletableId, setDeletableId] = useState<number>();
-
-  // Populate the localStorage and comments with initial data
-  /*useEffect(() => {
-    setComments(boardContext.state.comments);
-  }, [boardContext.state.comments]);*/
-
-  function showModal(deletableId: number) {
-    setIsModalShown(true);
-    setDeletableId(deletableId);
-  }
-
-  function hideModal() {
-    setIsModalShown(false);
-  }
-
-  // Uses deletableId
-  function deleteComment() {
-    let tempComments: IComment[] = JSON.parse(localStorage.getItem(COMMENTS_OBJECT) ?? "[]");
-    let originalSize = tempComments.length;
-
-    tempComments = tempComments.filter(comm => comm.id !== deletableId);
-    if (tempComments.length === originalSize) { // Nothing was deleted, filter the replies
-      tempComments = tempComments.map<IComment>(
-        comm => {
-          return {
-            id: comm.id,
-            content: comm.content,
-            createdAt: comm.createdAt,
-            score: comm.score,
-            replyingTo: comm.replyingTo,
-            user: comm.user,
-            replies: comm.replies.filter(rpl => rpl.id !== deletableId)
-          }
-        })
-    }
-
-    localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(tempComments));
-    setComments(tempComments);
-  }
 
   function updateCommentContent(id: number, newContent: string) {
     let tempComments: IComment[] = JSON.parse(localStorage.getItem(COMMENTS_OBJECT) ?? "[]");
@@ -102,12 +61,11 @@ export default function Container() {
     <>
       <CommentBoard
         comments={state.comments}
-        onShowModal={showModal}
         onEditComment={updateCommentContent}
         onUpdateScore={updateScore} />
 
-      {isModalShown &&
-        <DeleteModal onHideModal={hideModal} onDeleteComment={deleteComment} />
+      {state.commentPendingDeletionId &&
+        <DeleteModal />
       }
     </>
   );

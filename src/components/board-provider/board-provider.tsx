@@ -21,10 +21,6 @@ export default function BoardProvider({ children, signedUser, initialComments }:
     localStorage.setItem(COMMENTS_OBJECT, JSON.stringify(state.comments));
   }, [state])
 
-  /*const deleteComment = (id: number) => {
-    dispatch({ type: "DELETE_COMMENT", payload: id })
-  }*/
-
   return (
     <SignedUserContext.Provider value={signedUser}>
       <BoardContext.Provider value={{ state, dispatch }}>

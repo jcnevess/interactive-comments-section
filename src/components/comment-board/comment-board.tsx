@@ -9,14 +9,12 @@ import { IComment } from "@/lib/types";
 interface CommentBoardProps {
   comments: IComment[],
   rootComment?: IComment,
-  onShowModal: Function,
   onEditComment: Function,
   onUpdateScore: Function
 }
 
 export default function CommentBoard({ comments,
   rootComment = undefined,
-  onShowModal,
   onEditComment,
   onUpdateScore }: CommentBoardProps) {
 
@@ -28,14 +26,12 @@ export default function CommentBoard({ comments,
             <div className={styles.container} key={comment.id}>
               <CommentBlock comment={comment}
                 rootComment={rootComment ? rootComment : comment}
-                onShowModal={onShowModal}
                 onEditComment={onEditComment}
                 onUpdateScore={onUpdateScore} />
 
               {comment.replies &&
                 <CommentBoard comments={comment.replies}
                   rootComment={comment}
-                  onShowModal={onShowModal}
                   onEditComment={onEditComment}
                   onUpdateScore={onUpdateScore} />}
             </div>

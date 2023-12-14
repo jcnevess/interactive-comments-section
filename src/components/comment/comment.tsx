@@ -1,9 +1,11 @@
 "use client"
 
-import { FormEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import styles from './comment.module.scss';
 import moment from "moment";
 import { SignedUserContext } from "@/lib/signed-user.context";
+import { BoardContext } from "@/lib/board.context";
+import { addDeletionMark } from "@/lib/board.reducer";
 
 interface CommentProps {
   id: number,
@@ -19,13 +21,13 @@ interface CommentProps {
     username: string
   },
   onReplyClick: Function,
-  onDeleteClick: Function,
   onEditClick: Function,
   onVoteClick: Function
 }
 
 export default function Comment(props: CommentProps) {
   const signedUser = useContext(SignedUserContext);
+  const { dispatch } = useContext(BoardContext);
 
   const [isEditing, setIsEditing] = useState(false);
   const [commentContent, setCommentContent] = useState(props.content);
@@ -107,7 +109,7 @@ export default function Comment(props: CommentProps) {
           <div className={`${styles.author_actions} ${isEditing ? styles.disabled : ""}`}>
             <a href="#!" id={styles.action_delete}
               className={styles.action}
-              onClick={() => props.onDeleteClick(props.id)}>
+              onClick={() => dispatch(addDeletionMark(props.id))}>
               <span><img src="./images/icon-delete.svg" alt="" /></span>
               Delete
             </a>

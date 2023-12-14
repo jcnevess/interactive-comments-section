@@ -1,16 +1,16 @@
 "use client"
 
+import { cleanDeletionMark, deleteComment } from "@/lib/board.reducer";
 import styles from "./delete-modal.module.scss";
+import { useContext } from "react";
+import { BoardContext } from "@/lib/board.context";
 
-interface DeleteModalProps {
-  onHideModal: Function,
-  onDeleteComment: Function
-}
+export default function DeleteModal() {
 
-export default function DeleteModal({ onHideModal, onDeleteComment }: DeleteModalProps) {
+  const { state, dispatch } = useContext(BoardContext);
 
   // Executes the `handler` only if the event ocurred in the same element where it is registered 
-  function executeOnCurrentTarget(e: React.MouseEvent<HTMLElement>, handler: Function) {
+  function executeIfOnCurrentTarget(e: React.MouseEvent<HTMLElement>, handler: Function) {
     e.stopPropagation();
 
     if (e.target === e.currentTarget) {
@@ -21,7 +21,7 @@ export default function DeleteModal({ onHideModal, onDeleteComment }: DeleteModa
   return (
     <div id="background"
       className={styles.background}
-      onClick={(evt) => executeOnCurrentTarget(evt, onHideModal)}>
+      onClick={(evt) => executeIfOnCurrentTarget(evt, () => dispatch(cleanDeletionMark()))}>
       <div className={styles.content}>
         <div className={styles.header}>
           <h1>Delete comment</h1>
@@ -31,11 +31,11 @@ export default function DeleteModal({ onHideModal, onDeleteComment }: DeleteModa
           <button id="buttonNo"
             className={`${styles.button} ${styles.buttonNo}`}
             type="button"
-            onClick={(evt) => executeOnCurrentTarget(evt, onHideModal)}>No, cancel</button>
+            onClick={(evt) => executeIfOnCurrentTarget(evt, () => dispatch(cleanDeletionMark()))}>No, cancel</button>
           <button id="buttonYes"
             className={`${styles.button} ${styles.buttonYes}`}
             type="button"
-            onClick={(evt) => { onDeleteComment(); executeOnCurrentTarget(evt, onHideModal) }}>Yes, delete</button>
+            onClick={(evt) => executeIfOnCurrentTarget(evt, () => dispatch(deleteComment(state.commentPendingDeletionId!)))}>Yes, delete</button>
         </div>
       </div>
     </div>
