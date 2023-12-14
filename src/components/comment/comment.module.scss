@@ -110,6 +110,11 @@
   padding-inline: 0.5rem;
 }
 
+.action img {
+  width: 16px;
+  max-width: unset;
+}
+
 .upvote, .downvote {
   padding: 0.75rem;
   cursor: pointer;
