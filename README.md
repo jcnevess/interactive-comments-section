@@ -1,6 +1,4 @@
-# Frontend Mentor - Interactive comments section solution
-
-This is a solution to the [Interactive comments section challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
+# Interactive comments section solution
 
 ## Table of contents
 
@@ -73,4 +71,3 @@ Things that could be better: Every comment is ordered by score, even replies.
 ## Author
 
 - Website - [Júlio Neves](https://jcnevess.github.io/)
-- Frontend Mentor - [@jcnevess](https://www.frontendmentor.io/profile/jcnevess)
